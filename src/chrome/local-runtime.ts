@@ -54,13 +54,14 @@ export default class LocalRuntime {
       case 'goto':
         return this.goto(command.url)
       case 'setViewport':
-        return setViewport(this.client, command.options)
+        return setViewport(this.client, command.options, this.chromelessOptions)
       case 'wait': {
         if (command.selector) {
           return this.waitSelector(command.selector, command.timeout)
-        } else if (command.timeout) {
+        } else if (typeof command.timeout != 'undefined') {
           return this.waitTimeout(command.timeout)
         } else {
+          console.log(command);
           throw new Error('waitFn not yet implemented')
         }
       }

@@ -46,7 +46,7 @@ export default class Chromeless<T extends any> implements Promise<T> {
         ...options.cdp,
       },
 
-      ...options.chromeFlags || []
+      chromeFlags: options.chromeFlags || []
     }
 
     const chrome = mergedOptions.remote

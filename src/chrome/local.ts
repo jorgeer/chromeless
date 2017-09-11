@@ -27,7 +27,7 @@ export default class LocalChrome implements Chrome {
       : await this.connectToChrome()
 
     const { viewport = {} as DeviceMetrics } = this.options
-    await setViewport(client, viewport as DeviceMetrics)
+    await setViewport(client, viewport as DeviceMetrics, this.options)
 
     const runtime = new LocalRuntime(client, this.options)
 
@@ -40,7 +40,7 @@ export default class LocalChrome implements Chrome {
     this.chromeInstance = await launch({
       logLevel: this.options.debug ? 'info' : 'silent',
       port,
-      chromeFlags: this.options.chromeFlags
+      chromeFlags: this.options.chromeFlags,
     })
     const target = await CDP.New({
       port: this.chromeInstance.port,

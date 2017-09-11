@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as os from 'os'
 import * as path from 'path'
 import * as cuid from 'cuid'
-import { Client, Cookie, DeviceMetrics, PdfOptions, BoxModel, Viewport } from './types'
+import { Client, Cookie, DeviceMetrics, PdfOptions, BoxModel, Viewport, ChromelessOptions } from './types'
 import * as CDP from 'chrome-remote-interface'
 import * as AWS from 'aws-sdk'
 
@@ -19,6 +19,7 @@ export const version: string = ((): string => {
 export async function setViewport(
   client: Client,
   viewport: DeviceMetrics = { width: 1, height: 1, scale: 1 },
+  options: ChromelessOptions
 ): Promise<void> {
   const config: any = {
     deviceScaleFactor: 1,
@@ -26,8 +27,8 @@ export async function setViewport(
     scale: viewport.scale || 1,
     fitWindow: false, // as we cannot resize the window, `fitWindow: false` is needed in order for the viewport to be resizable
   }
-
-  const versionResult = await CDP.Version()
+  const { host, port } = options.cdp
+  const versionResult = await CDP.Version({ host, port })
   const isHeadless = versionResult['User-Agent'].includes('Headless')
 
   if (viewport.height && viewport.width) {
