@@ -45,6 +45,8 @@ export default class Chromeless<T extends any> implements Promise<T> {
         closeTab: true,
         ...options.cdp,
       },
+
+      ...options.chromeFlags || []
     }
 
     const chrome = mergedOptions.remote
